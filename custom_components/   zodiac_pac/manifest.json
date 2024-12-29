@@ -1,6 +1,6 @@
 {
-  "domain": "iaqualink",
-  "name": "iAqualink",
+  "domain": "zodiac_pac",
+  "name": "zodiac_pac",
   "version": "1.0.0",
   "documentation": "https://github.com/VincentPFEILER/iaqualink-pac/blob/main/README.md",
   "requirements": ["requests"],
