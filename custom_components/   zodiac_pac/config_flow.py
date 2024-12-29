@@ -1,42 +1,36 @@
 import logging
 import voluptuous as vol
 from homeassistant import config_entries
-from homeassistant.core import callback
 from .const import DOMAIN
-from .api import ZodiacAPI
 
 _LOGGER = logging.getLogger(__name__)
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle the configuration flow for Zodiac PAC."""
+    """Handle a config flow for Zodiac PAC."""
 
     VERSION = 1
 
     async def async_step_user(self, user_input=None):
         """Handle the initial step of the configuration flow."""
+        _LOGGER.debug("ConfigFlow triggered for Zodiac PAC")
         errors = {}
 
         if user_input is not None:
             email = user_input.get("email")
             password = user_input.get("password")
 
-            # Simulate API authentication (replace with actual API call)
-            api = ZodiacAPI(email, password)
-            try:
-                await self.hass.async_add_executor_job(api.authenticate)
-                _LOGGER.debug("Authentication successful for %s", email)
-
+            # Simulation de validation des identifiants
+            if email == "test@example.com" and password == "password":
+                _LOGGER.debug("Validation réussie pour l'utilisateur : %s", email)
                 return self.async_create_entry(
                     title="Zodiac PAC",
-                    data={
-                        "email": email,
-                        "password": password,
-                    },
+                    data=user_input,
                 )
-            except Exception as e:
-                _LOGGER.error("Authentication failed: %s", e)
-                errors["base"] = "auth_failed"
+            else:
+                _LOGGER.error("Échec de validation pour l'utilisateur : %s", email)
+                errors["base"] = "invalid_auth"
 
+        # Formulaire affiché si aucune donnée ou erreur
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema(
@@ -46,30 +40,4 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 }
             ),
             errors=errors,
-        )
-
-    @staticmethod
-    @callback
-    def async_get_options_flow(config_entry):
-        """Define the options flow."""
-        return OptionsFlowHandler(config_entry)
-
-class OptionsFlowHandler(config_entries.OptionsFlow):
-    """Handle options flow for Zodiac PAC."""
-
-    def __init__(self, config_entry):
-        self.config_entry = config_entry
-
-    async def async_step_init(self, user_input=None):
-        """Manage the options for the integration."""
-        if user_input is not None:
-            return self.async_create_entry(title="", data=user_input)
-
-        return self.async_show_form(
-            step_id="init",
-            data_schema=vol.Schema(
-                {
-                    vol.Optional("update_interval", default=10): int,
-                }
-            ),
         )
