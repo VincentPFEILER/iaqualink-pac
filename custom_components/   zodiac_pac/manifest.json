@@ -2,7 +2,7 @@
   "domain": "iaqualink",
   "name": "iAqualink",
   "version": "1.0.0",
-  "documentation": "https://github.com/VincentPFEILER/iaqualink-pac/README.md",
+  "documentation": "https://github.com/VincentPFEILER/iaqualink-pac/blob/main/README.md",
   "requirements": ["requests"],
   "codeowners": ["@VincentPFEILER"],
   "iot_class": "cloud_polling"
