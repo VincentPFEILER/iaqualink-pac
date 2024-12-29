@@ -1,1 +1,9 @@
-
+{
+  "domain": "zodiac_pac",
+  "name": "Zodiac PAC",
+  "version": "1.0",
+  "documentation": "https://github.com/VincentPFEILER/zodiac-pac",
+  "requirements": ["requests"],
+  "codeowners": ["@VincentPFEILER"],
+  "iot_class": "cloud_polling"
+}
