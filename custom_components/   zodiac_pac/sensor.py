@@ -1,14 +1,22 @@
 from homeassistant.components.sensor import SensorEntity
+from .api import ZodiacAPI
 from .const import DOMAIN
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
-    api = ZodiacPacAPI(
-        config_entry.data["username"],
-        config_entry.data["password"]
-    )
-    async_add_entities([ZodiacPacSensor(api)])
+    """Set up the sensor from a config entry."""
+    email = config_entry.data["email"]
+    password = config_entry.data["password"]
+    api = ZodiacAPI(email, password)
 
-class ZodiacPacSensor(SensorEntity):
+    try:
+        await hass.async_add_executor_job(api.authenticate)
+        async_add_entities([ZodiacSensor(api)])
+    except Exception:
+        return
+
+class ZodiacSensor(SensorEntity):
+    """Define a sensor for the iAqualink integration."""
+
     def __init__(self, api):
         self.api = api
         self._state = None
@@ -22,5 +30,7 @@ class ZodiacPacSensor(SensorEntity):
         return self._state
 
     async def async_update(self):
-        self._state = self.api.get_pac_info().get("current_temperature")
-
+        """Fetch the latest data."""
+        # Example call to fetch state
+        # Update this with your desired API endpoint
+        self._state = "Online"  # Replace with actual API data
