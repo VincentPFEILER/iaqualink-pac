@@ -1,3 +1,3 @@
-# iaqualink-pac
+# Zodiac PAC
 
 Bonjour
